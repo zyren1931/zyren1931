@@ -1,0 +1,1551 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KikiFit</title>
+    <style>
+        /* AQUÍ VA TODO EL CSS QUE TE PASÉ EN LA RESPUESTA ANTERIOR */
+        /* (El CSS completo con todas las mejoras responsive) */
+        
+        :root {
+            --primary: #6c63ff;
+            --secondary: #4a44b5;
+            --dark: #121212;
+            --dark-secondary: #1e1e1e;
+            --text: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --accent: #ff6b6b;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --error: #f44336;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header y Navegación */
+        header {
+            background-color: var(--dark-secondary);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+/* Menu Hamburguesa */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid var(--primary);
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 8px;
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.menu-toggle:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: var(--text);
+}
+
+.menu-toggle span {
+    display: block;
+    height: 3px;
+    width: 24px;
+    background-color: #ffffff;
+    margin: 2px 0;
+    transition: 0.3s;
+    border-radius: 2px;
+}
+
+/* Animación cuando el menú está activo */
+.menu-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+}
+
+.menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+}
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 10px;
+        }
+
+        nav ul li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            display: block;
+            font-weight: 500;
+        }
+
+        nav ul li a:hover, 
+        nav ul li a.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* Secciones de contenido */
+        .page {
+            display: none;
+            padding: 40px 0;
+            min-height: calc(100vh - 120px);
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        .card {
+            background-color: var(--dark-secondary);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Inicio */
+        .current-weight {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .weight-input {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            padding: 12px 15px;
+            color: var(--text);
+            width: 120px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .weight-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.2);
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: 600;
+            font-size: 0.95rem;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary);
+        }
+
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-danger {
+            background-color: var(--error);
+        }
+
+        .btn-danger:hover {
+            background-color: #d32f2f;
+        }
+
+        .current-date {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        /* Guía de alimentación */
+        .day-meals {
+            margin-bottom: 20px;
+        }
+
+        .meal-time {
+            color: var(--primary);
+            font-weight: 600;
+            margin: 15px 0 5px;
+        }
+
+        .meal-description {
+            margin-left: 15px;
+            color: var(--text-secondary);
+        }
+
+        /* Rutina de ejercicios */
+        .exercise-day {
+            margin-bottom: 30px;
+        }
+
+        .day-title {
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+
+        .exercise-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .exercise-table th {
+            background-color: rgba(108, 99, 255, 0.2);
+            color: var(--primary);
+            text-align: left;
+            padding: 12px 15px;
+        }
+
+        .exercise-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .exercise-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Calculadora de calorías */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            max-width: 300px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            padding: 12px 15px;
+            color: var(--text);
+            font-size: 1rem;
+            transition: all 0.3s;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.2);
+        }
+
+        .custom-select {
+            position: relative;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .custom-select select {
+            width: 100%;
+            background-color: var(--dark-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            padding: 12px 15px;
+            color: var(--text);
+            font-size: 1rem;
+            appearance: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .custom-select select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.2);
+        }
+
+        .custom-select::after {
+            content: "▼";
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            color: var(--text);
+            pointer-events: none;
+            font-size: 0.8rem;
+        }
+
+        .result-box {
+            background-color: rgba(76, 175, 80, 0.1);
+            border: 1px solid var(--success);
+            border-radius: 6px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .result-box.active {
+            display: block;
+        }
+
+        .calories-result {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--success);
+            margin: 10px 0;
+        }
+
+        /* Historial de peso */
+        .weight-history-form {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+
+        .month-select {
+            background-color: var(--dark-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            padding: 12px 15px;
+            color: var(--text);
+            min-width: 150px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .month-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.2);
+        }
+
+        .weight-history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .weight-history-table th {
+            background-color: rgba(108, 99, 255, 0.2);
+            color: var(--primary);
+            text-align: left;
+            padding: 12px 15px;
+        }
+
+        .weight-history-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .weight-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .weight-actions .btn {
+            padding: 6px 12px;
+            font-size: 0.85rem;
+        }
+
+        .no-data {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 30px;
+        }
+
+        .weight-summary {
+            background-color: rgba(108, 99, 255, 0.1);
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .weight-change {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .positive {
+            color: var(--success);
+        }
+
+        .negative {
+            color: var(--error);
+        }
+
+        /* Tiendas de interés */
+        .stores-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .store-card {
+            background-color: var(--dark-secondary);
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .store-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .store-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .store-name {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .store-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            display: block;
+            margin-top: 10px;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .store-link:hover {
+            color: var(--primary);
+        }
+
+        /* Notificaciones */
+        .notification-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .notification {
+            background-color: var(--dark-secondary);
+            border-left: 4px solid var(--primary);
+            border-radius: 6px;
+            padding: 15px 20px;
+            margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-width: 300px;
+            transform: translateX(100%);
+            opacity: 0;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .notification.success {
+            border-left-color: var(--success);
+        }
+
+        .notification.error {
+            border-left-color: var(--error);
+        }
+
+        .notification.warning {
+            border-left-color: var(--warning);
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin-left: 10px;
+        }
+
+        .notification-close:hover {
+            color: var(--text);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-secondary);
+            padding: 20px 0;
+            text-align: center;
+            color: var(--text-secondary);
+            margin-top: 40px;
+        }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .nav-container {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 15px 0;
+    }
+
+    .menu-toggle {
+        display: flex; /* Asegurar que se muestre en móviles */
+    }
+
+    .nav-menu {
+        position: fixed;
+        top: 70px;
+        left: -100%;
+        width: 100%;
+        height: calc(100vh - 70px);
+        background-color: var(--dark-secondary);
+        transition: left 0.3s ease;
+        z-index: 99;
+        padding: 20px;
+        overflow-y: auto;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .nav-menu.active {
+        left: 0;
+    }
+
+    nav ul {
+        flex-direction: column;
+        margin-top: 0;
+        width: 100%;
+    }
+
+    nav ul li {
+        margin: 8px 0;
+        width: 100%;
+    }
+
+    nav ul li a {
+        padding: 15px 20px;
+        text-align: center;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    nav ul li a:hover,
+    nav ul li a.active {
+        background-color: var(--primary);
+        color: white;
+        border-color: var(--primary);
+    }
+
+            /* Mejoras para tablas en móviles */
+            .exercise-table,
+            .weight-history-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .exercise-table th,
+            .exercise-table td,
+            .weight-history-table th,
+            .weight-history-table td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            /* Mejoras para formularios */
+            .form-control,
+            .custom-select,
+            .weight-input {
+                max-width: 100%;
+                font-size: 16px; /* Evita zoom en iOS */
+            }
+
+            .current-weight {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+
+            .weight-input {
+                width: 100%;
+                max-width: none;
+            }
+
+            .weight-history-form {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .weight-actions {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .weight-actions .btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            /* Mejoras para cards */
+            .card {
+                padding: 20px 15px;
+                margin-bottom: 20px;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+                margin-bottom: 20px;
+            }
+
+            /* Tiendas en grid de una columna */
+            .stores-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            /* Notificaciones más pequeñas */
+            .notification {
+                min-width: 280px;
+                right: 10px;
+                left: 10px;
+                width: calc(100% - 20px);
+            }
+
+            .page {
+                padding: 20px 0;
+                min-height: calc(100vh - 100px);
+            }
+
+            .container {
+                padding: 0 15px;
+            }
+        }
+
+        /* Para pantallas muy pequeñas */
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            .page {
+                padding: 15px 0;
+            }
+
+            .card {
+                padding: 15px 10px;
+                margin-bottom: 15px;
+            }
+
+            .btn {
+                padding: 12px 20px;
+                width: 100%;
+                text-align: center;
+            }
+
+            .current-date {
+                font-size: 1rem;
+            }
+
+            .calories-result {
+                font-size: 1.3rem;
+            }
+
+            .page-title {
+                font-size: 1.3rem;
+            }
+
+            .logo {
+                font-size: 1.3rem;
+            }
+
+            .store-card {
+                padding: 20px 15px;
+            }
+
+            .store-icon {
+                font-size: 2rem;
+            }
+        }
+
+        /* Para tablets */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .stores-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .container {
+                padding: 0 30px;
+            }
+
+            .nav-container {
+                padding: 15px 0;
+            }
+        }
+
+        /* Prevenir zoom en inputs en iOS */
+        @media (max-width: 768px) {
+            input, select, textarea {
+                font-size: 16px;
+            }
+        }
+
+        /* Mejoras de rendimiento táctil */
+        .nav-link, .store-card, .btn, .notification-close, .store-link {
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="nav-container">
+                <div class="logo">KikiFit</div>
+                
+                <!-- BOTÓN MENÚ HAMBURGUESA (LAS 3 BARRAS) -->
+                <button class="menu-toggle" id="menuToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                
+                <!-- MENÚ DE NAVEGACIÓN -->
+                <nav class="nav-menu" id="navMenu">
+                    <ul>
+                        <li><a href="#" class="nav-link active" data-page="inicio">Inicio</a></li>
+                        <li><a href="#" class="nav-link" data-page="alimentacion">Guía de Alimentación</a></li>
+                        <li><a href="#" class="nav-link" data-page="ejercicios">Rutina de Ejercicios</a></li>
+                        <li><a href="#" class="nav-link" data-page="calorias">Calculadora de Calorías</a></li>
+                        <li><a href="#" class="nav-link" data-page="historial">Historial de Peso</a></li>
+                        <li><a href="#" class="nav-link" data-page="tiendas">Tiendas de Interés</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Página de Inicio -->
+        <section id="inicio" class="page active">
+            <h1 class="page-title">Inicio</h1>
+            <div class="card">
+                <h2>Mi Peso Actual</h2>
+                <div class="current-weight">
+                    <input type="number" id="weight-input" class="weight-input" placeholder="Peso en kg">
+                    <button id="save-weight" class="btn">Guardar Peso</button>
+                </div>
+                <p class="current-date" id="current-date"></p>
+            </div>
+            <div class="card">
+                <h2>Resumen del Día</h2>
+                <p>Aquí puedes ver tu progreso diario y acceder rápidamente a las secciones más importantes de tu plan de fitness.</p>
+            </div>
+        </section>
+
+        <!-- Guía de Alimentación -->
+        <section id="alimentacion" class="page">
+            <h1 class="page-title">Guía de Alimentación</h1>
+            <div class="card">
+                <h2 id="current-day-title">Plan de Comidas para Hoy</h2>
+                <div id="today-meals">
+                    <!-- Se llena dinámicamente con JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Rutina de Ejercicios -->
+        <section id="ejercicios" class="page">
+            <h1 class="page-title">Rutina de Ejercicios</h1>
+            <div class="card">
+                <div class="exercise-day">
+                    <h3 class="day-title">Día 1 – Pecho + Tríceps</h3>
+                    <table class="exercise-table">
+                        <thead>
+                            <tr>
+                                <th>Ejercicio</th>
+                                <th>Series x Repeticiones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Press de pecho con mancuernas</td>
+                                <td>4×8–12</td>
+                            </tr>
+                            <tr>
+                                <td>Flexiones (normales o rodillas)</td>
+                                <td>3×8–12</td>
+                            </tr>
+                            <tr>
+                                <td>Aperturas con mancuernas</td>
+                                <td>3×10–12</td>
+                            </tr>
+                            <tr>
+                                <td>Fondos en silla o extensiones de tríceps</td>
+                                <td>3×10–12</td>
+                            </tr>
+                            <tr>
+                                <td>Extensiones de tríceps con barra Z sobre la cabeza</td>
+                                <td>3×10–12</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="exercise-day">
+                    <h3 class="day-title">Día 2 – Espalda + Bíceps</h3>
+                    <table class="exercise-table">
+                        <thead>
+                            <tr>
+                                <th>Ejercicio</th>
+                                <th>Series x Repeticiones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Remo con mancuernas</td>
+                                <td>4×8–12</td>
+                            </tr>
+                            <tr>
+                                <td>Peso muerto rumano con barra Z</td>
+                                <td>4×10–12</td>
+                            </tr>
+                            <tr>
+                                <td>Pullover con mancuerna</td>
+                                <td>3×10–12</td>
+                            </tr>
+                            <tr>
+                                <td>Curl de bíceps con barra Z de pie</td>
+                                <td>4×8–12</td>
+                            </tr>
+                            <tr>
+                                <td>Curl prono con barra Z</td>
+                                <td>3×10–12</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="exercise-day">
+                    <h3 class="day-title">Día 3 – Piernas + Core</h3>
+                    <table class="exercise-table">
+                        <thead>
+                            <tr>
+                                <th>Ejercicio</th>
+                                <th>Series x Repeticiones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Sentadillas con mancuerna (goblet squat)</td>
+                                <td>4×10–12</td>
+                            </tr>
+                            <tr>
+                                <td>Zancadas con mancuernas</td>
+                                <td>3×10 cada pierna</td>
+                            </tr>
+                            <tr>
+                                <td>Hip thrust (puente glúteos)</td>
+                                <td>3×12–15</td>
+                            </tr>
+                            <tr>
+                                <td>Elevación de talones (gemelos)</td>
+                                <td>3×20</td>
+                            </tr>
+                            <tr>
+                                <td>Plancha (rodillas o normal)</td>
+                                <td>3×20–30 seg</td>
+                            </tr>
+                            <tr>
+                                <td>Dead bug o crunch adaptado</td>
+                                <td>3×12–15</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="exercise-day">
+                    <h3 class="day-title">Día 4 – Hombros + Core</h3>
+                    <table class="exercise-table">
+                        <thead>
+                            <tr>
+                                <th>Ejercicio</th>
+                                <th>Series x Repeticiones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Press militar con mancuernas</td>
+                                <td>4×8–10</td>
+                            </tr>
+                            <tr>
+                                <td>Elevaciones laterales</td>
+                                <td>3×12–15</td>
+                            </tr>
+                            <tr>
+                                <td>Elevaciones frontales</td>
+                                <td>3×12–15</td>
+                            </tr>
+                            <tr>
+                                <td>Pájaros (elevaciones posteriores)</td>
+                                <td>3×12–15</td>
+                            </tr>
+                            <tr>
+                                <td>Remo al mentón con barra Z</td>
+                                <td>3×10–12</td>
+                            </tr>
+                            <tr>
+                                <td>Plancha lateral</td>
+                                <td>2×20 seg cada lado</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Calculadora de Calorías -->
+        <section id="calorias" class="page">
+            <h1 class="page-title">Calculadora de Calorías</h1>
+            <div class="card">
+                <form id="calorie-form">
+                    <div class="form-group">
+                        <label for="weight">Peso (kg)</label>
+                        <input type="number" id="weight" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="height">Altura (cm)</label>
+                        <input type="number" id="height" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="age">Edad</label>
+                        <input type="number" id="age" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Sexo</label>
+                        <div class="custom-select">
+                            <select id="gender" required>
+                                <option value="">Selecciona</option>
+                                <option value="male">Hombre</option>
+                                <option value="female">Mujer</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="activity">Nivel de Actividad</label>
+                        <div class="custom-select">
+                            <select id="activity" required>
+                                <option value="">Selecciona</option>
+                                <option value="1.2">Sedentario (poco o ningún ejercicio)</option>
+                                <option value="1.375">Ligero (ejercicio ligero 1-3 días/semana)</option>
+                                <option value="1.55">Moderado (ejercicio moderado 3-5 días/semana)</option>
+                                <option value="1.725">Activo (ejercicio intenso 6-7 días/semana)</option>
+                                <option value="1.9">Muy activo (ejercicio muy intenso y trabajo físico)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="goal">Objetivo</label>
+                        <div class="custom-select">
+                            <select id="goal" required>
+                                <option value="">Selecciona</option>
+                                <option value="lose">Perder grasa</option>
+                                <option value="maintain">Mantener peso</option>
+                                <option value="gain">Ganar músculo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn">Calcular Calorías</button>
+                </form>
+                <div id="calorie-result" class="result-box">
+                    <h3>Tu requerimiento calórico diario es:</h3>
+                    <div class="calories-result" id="calories-value"></div>
+                    <p id="calorie-explanation"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Historial de Peso -->
+        <section id="historial" class="page">
+            <h1 class="page-title">Historial de Peso</h1>
+            <div class="card">
+                <h2>Registrar Nuevo Peso</h2>
+                <form id="weight-history-form" class="weight-history-form">
+                    <div class="form-group">
+                        <label for="month-select">Mes</label>
+                        <select id="month-select" class="month-select" required>
+                            <option value="">Selecciona un mes</option>
+                            <option value="0">Enero</option>
+                            <option value="1">Febrero</option>
+                            <option value="2">Marzo</option>
+                            <option value="3">Abril</option>
+                            <option value="4">Mayo</option>
+                            <option value="5">Junio</option>
+                            <option value="6">Julio</option>
+                            <option value="7">Agosto</option>
+                            <option value="8">Septiembre</option>
+                            <option value="9">Octubre</option>
+                            <option value="10">Noviembre</option>
+                            <option value="11">Diciembre</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="month-weight">Peso (kg)</label>
+                        <input type="number" id="month-weight" class="weight-input" placeholder="Peso en kg" required>
+                        <button type="submit" class="btn">Guardar Peso Mensual</button>
+                    </div>
+                    
+                </form>
+            </div>
+            <div class="card">
+                <h2>Resumen Anual</h2>
+                <div id="weight-summary" class="weight-summary">
+                    <!-- Se llena dinámicamente con JavaScript -->
+                </div>
+                <div id="weight-history-container">
+                    <table class="weight-history-table">
+                        <thead>
+                            <tr>
+                                <th>Mes</th>
+                                <th>Peso (kg)</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="weight-history-body">
+                            <!-- Se llena dinámicamente con JavaScript -->
+                        </tbody>
+                    </table>
+                    <div id="no-weight-data" class="no-data">
+                        <p>Aún no hay datos de peso registrados.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tiendas de Interés -->
+        <section id="tiendas" class="page">
+            <h1 class="page-title">Tiendas de Interés</h1>
+            <div class="stores-grid">
+                <div class="store-card" data-url="https://www.hsnstore.com/">
+                    <div class="store-icon">🏋️</div>
+                    <h3 class="store-name">HSN</h3>
+                    <p>Suplementos deportivos y nutrición</p>
+                    <a href="https://www.hsnstore.com/" class="store-link" target="_blank">Visitar tienda</a>
+                </div>
+                <div class="store-card" data-url="https://www.decathlon.es/es">
+                    <div class="store-icon">👕</div>
+                    <h3 class="store-name">Decathlon</h3>
+                    <p>Ropa y equipamiento deportivo</p>
+                    <a href="https://www.decathlon.es/es" class="store-link" target="_blank">Visitar tienda</a>
+                </div>
+                <div class="store-card" data-url="https://www.prozis.com/es/es">
+                    <div class="store-icon">💪</div>
+                    <h3 class="store-name">Prozis</h3>
+                    <p>Ropa y suplementacion deportiva</p>
+                    <a href="https://www.prozis.com/es/es" class="store-link" target="_blank">Visitar tienda</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Notificaciones -->
+    <div class="notification-container" id="notification-container">
+        <!-- Las notificaciones se insertarán aquí dinámicamente -->
+    </div>
+
+    <script>
+// Menú hamburguesa para móviles
+const menuToggle = document.getElementById('menuToggle');
+const navMenu = document.getElementById('navMenu');
+
+if (menuToggle) {
+    menuToggle.addEventListener('click', function() {
+        navMenu.classList.toggle('active');
+        menuToggle.classList.toggle('active'); // Añade esta línea
+        document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : '';
+    });
+
+    // Cerrar menú al hacer clic en un enlace
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            navMenu.classList.remove('active');
+            menuToggle.classList.remove('active'); // Añade esta línea
+            document.body.style.overflow = '';
+        });
+    });
+
+    // Cerrar menú al hacer clic fuera
+    document.addEventListener('click', function(e) {
+        if (!navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+            navMenu.classList.remove('active');
+            menuToggle.classList.remove('active'); // Añade esta línea
+            document.body.style.overflow = '';
+        }
+    });
+}
+
+        // Función para mostrar notificaciones
+        function showNotification(message, type = 'success') {
+            const container = document.getElementById('notification-container');
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <div class="notification-content">${message}</div>
+                <button class="notification-close">&times;</button>
+            `;
+            
+            container.appendChild(notification);
+            
+            // Mostrar notificación con animación
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 10);
+            
+            // Configurar botón de cierre
+            const closeBtn = notification.querySelector('.notification-close');
+            closeBtn.addEventListener('click', () => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    container.removeChild(notification);
+                }, 300);
+            });
+            
+            // Auto-eliminar después de 5 segundos
+            setTimeout(() => {
+                if (notification.parentNode === container) {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        if (notification.parentNode === container) {
+                            container.removeChild(notification);
+                        }
+                    }, 300);
+                }
+            }, 5000);
+        }
+
+        // Navegación entre páginas
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configurar navegación
+            const navLinks = document.querySelectorAll('.nav-link');
+            const pages = document.querySelectorAll('.page');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remover clase activa de todos los enlaces
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    
+                    // Añadir clase activa al enlace clickeado
+                    this.classList.add('active');
+                    
+                    // Ocultar todas las páginas
+                    pages.forEach(page => page.classList.remove('active'));
+                    
+                    // Mostrar la página correspondiente
+                    const pageId = this.getAttribute('data-page');
+                    document.getElementById(pageId).classList.add('active');
+                });
+            });
+
+            // Configurar fecha actual
+            function updateCurrentDate() {
+                const now = new Date();
+                const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                const formattedDate = now.toLocaleDateString('es-ES', options);
+                document.getElementById('current-date').textContent = formattedDate;
+            }
+            
+            updateCurrentDate();
+
+            // Configurar peso actual
+            const weightInput = document.getElementById('weight-input');
+            const saveWeightBtn = document.getElementById('save-weight');
+            
+            // Cargar peso guardado si existe
+            const savedWeight = localStorage.getItem('currentWeight');
+            if (savedWeight) {
+                weightInput.value = savedWeight;
+            }
+            
+            saveWeightBtn.addEventListener('click', function() {
+                const weight = weightInput.value;
+                if (weight && !isNaN(weight)) {
+                    localStorage.setItem('currentWeight', weight);
+                    showNotification('Peso guardado correctamente', 'success');
+                } else {
+                    showNotification('Por favor, introduce un peso válido', 'error');
+                }
+            });
+
+            // Configurar guía de alimentación
+            function loadTodayMeals() {
+                const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+                const today = new Date().getDay();
+                const dayTitle = document.getElementById('current-day-title');
+                const todayMeals = document.getElementById('today-meals');
+                
+                dayTitle.textContent = `Plan de Comidas para ${days[today]}`;
+                
+                const mealsData = {
+                    1: { // Lunes
+                        desayuno: "Tortilla (3 claras + 2 huevos) + 70 g pan integral + 50 g jamón/pavo",
+                        comida: "200 g pollo a la plancha + 80 g arroz en crudo + 150 g tomate",
+                        snack: "200 g yogur griego + 20 g chocolate 85%",
+                        cena: "2 huevos + 120 g atún al natural"
+                    },
+                    2: { // Martes
+                        desayuno: "200 g yogur griego + 40 g avena + 15 g crema cacahuete + 100 g plátano",
+                        comida: "200 g ternera magra + 250 g patata + 100 g zanahoria cocida",
+                        snack: "1 lata atún al natural (80 g escurrido)",
+                        cena: "200 g queso fresco batido + 15 g crema cacahuete"
+                    },
+                    3: { // Miércoles
+                        desayuno: "Batido: 250 ml leche + 30 g proteína en polvo + 5 g cacao puro",
+                        comida: "200 g lomo de cerdo + 80 g cous cous en crudo + 150 g calabacín",
+                        snack: "2 huevos cocidos",
+                        cena: "2 huevos + 3 claras + 120 g champiñones / 50 g jamón"
+                    },
+                    4: { // Jueves
+                        desayuno: "Tortilla (3 claras + 2 huevos) + 70 g pan integral",
+                        comida: "200 g salmón al horno + 80 g arroz basmati en crudo + 60 g aguacate",
+                        snack: "200 g queso fresco batido + canela",
+                        cena: "200 g yogur griego + 50 g jamón serrano/pavo"
+                    },
+                    5: { // Viernes
+                        desayuno: "2 huevos + 3 claras revueltos + 70 g pan integral + 150 g queso fresco batido",
+                        comida: "2 huevos + 3 claras revueltos + 70 g pan integral",
+                        snack: "Batido proteína (30 g polvo + 250 ml agua/leche)",
+                        cena: "200 g pechuga de pollo + 60 g pan integral"
+                    },
+                    6: { // Sábado
+                        desayuno: "200 g yogur griego + 40 g avena + 100 g fruta",
+                        comida: "200 g pechuga de pavo + 80 g pasta integral en crudo + 150 g tomate triturado",
+                        snack: "200 g queso fresco batido",
+                        cena: "2 huevos + 3 claras revueltos + 50 g jamón serrano"
+                    },
+                    0: { // Domingo
+                        desayuno: "Tortilla (3 claras + 2 huevos) + 70 g pan integral",
+                        comida: "200 g hamburguesa casera de ternera/pollo + 250 g patata al horno + ensalada simple",
+                        snack: "200 g queso fresco batido + 20 g chocolate negro",
+                        cena: "200 g yogur griego + 50 g jamón/pavo"
+                    }
+                };
+                
+                const todayMeal = mealsData[today];
+                
+                let mealsHTML = '';
+                for (const [time, meal] of Object.entries(todayMeal)) {
+                    mealsHTML += `
+                        <div class="day-meals">
+                            <h4 class="meal-time">${time.charAt(0).toUpperCase() + time.slice(1)}</h4>
+                            <p class="meal-description">${meal}</p>
+                        </div>
+                    `;
+                }
+                
+                todayMeals.innerHTML = mealsHTML;
+            }
+            
+            loadTodayMeals();
+
+            // Configurar calculadora de calorías
+            const calorieForm = document.getElementById('calorie-form');
+            const calorieResult = document.getElementById('calorie-result');
+            const caloriesValue = document.getElementById('calories-value');
+            const calorieExplanation = document.getElementById('calorie-explanation');
+            
+            calorieForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const weight = parseFloat(document.getElementById('weight').value);
+                const height = parseFloat(document.getElementById('height').value);
+                const age = parseInt(document.getElementById('age').value);
+                const gender = document.getElementById('gender').value;
+                const activity = parseFloat(document.getElementById('activity').value);
+                const goal = document.getElementById('goal').value;
+                
+                if (!weight || !height || !age || !gender || !activity || !goal) {
+                    showNotification('Por favor, completa todos los campos', 'error');
+                    return;
+                }
+                
+                // Cálculo de calorías según la fórmula de Harris-Benedict
+                let bmr;
+                if (gender === 'male') {
+                    bmr = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+                } else {
+                    bmr = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+                }
+                
+                let tdee = bmr * activity;
+                
+                // Ajustar según objetivo
+                let adjustedCalories;
+                let explanation;
+                
+                if (goal === 'lose') {
+                    adjustedCalories = tdee - 500;
+                    explanation = `Para perder grasa de forma sostenible, consume aproximadamente ${Math.round(adjustedCalories)} calorías diarias.`;
+                } else if (goal === 'gain') {
+                    adjustedCalories = tdee + 300;
+                    explanation = `Para ganar músculo de forma limpia, consume aproximadamente ${Math.round(adjustedCalories)} calorías diarias.`;
+                } else {
+                    adjustedCalories = tdee;
+                    explanation = `Para mantener tu peso actual, consume aproximadamente ${Math.round(adjustedCalories)} calorías diarias.`;
+                }
+                
+                caloriesValue.textContent = `${Math.round(adjustedCalories)} calorías`;
+                calorieExplanation.textContent = explanation;
+                calorieResult.classList.add('active');
+            });
+
+            // Configurar historial de peso
+            const weightHistoryForm = document.getElementById('weight-history-form');
+            const monthSelect = document.getElementById('month-select');
+            const monthWeight = document.getElementById('month-weight');
+            const weightHistoryBody = document.getElementById('weight-history-body');
+            const noWeightData = document.getElementById('no-weight-data');
+            const weightSummary = document.getElementById('weight-summary');
+            
+            // Cargar historial de peso desde localStorage
+            let weightHistory = JSON.parse(localStorage.getItem('weightHistory')) || [];
+            
+            function updateWeightHistoryDisplay() {
+                if (weightHistory.length === 0) {
+                    weightHistoryBody.innerHTML = '';
+                    noWeightData.style.display = 'block';
+                    weightSummary.innerHTML = '<p>No hay datos suficientes para mostrar un resumen.</p>';
+                    return;
+                }
+                
+                noWeightData.style.display = 'none';
+                
+                // Ordenar por año y mes
+                weightHistory.sort((a, b) => {
+                    if (a.year !== b.year) return b.year - a.year;
+                    return b.month - a.month;
+                });
+                
+                let tableHTML = '';
+                const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+                
+                weightHistory.forEach(entry => {
+                    tableHTML += `
+                        <tr>
+                            <td>${monthNames[entry.month]} ${entry.year}</td>
+                            <td>${entry.weight} kg</td>
+                            <td class="weight-actions">
+                                <button class="btn btn-danger delete-weight" data-id="${entry.id}">Eliminar</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                weightHistoryBody.innerHTML = tableHTML;
+                
+                // Configurar botones de editar y eliminar
+                document.querySelectorAll('.edit-weight').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = this.getAttribute('data-id');
+                        const entry = weightHistory.find(item => item.id === id);
+                        
+                        if (entry) {
+                            monthSelect.value = entry.month;
+                            monthWeight.value = entry.weight;
+                            
+                            // Eliminar la entrada actual para reemplazarla
+                            weightHistory = weightHistory.filter(item => item.id !== id);
+                            localStorage.setItem('weightHistory', JSON.stringify(weightHistory));
+                            updateWeightHistoryDisplay();
+                        }
+                    });
+                });
+                
+                document.querySelectorAll('.delete-weight').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = this.getAttribute('data-id');
+                        
+                        if (confirm('¿Estás seguro de que quieres eliminar este registro?')) {
+                            weightHistory = weightHistory.filter(item => item.id !== id);
+                            localStorage.setItem('weightHistory', JSON.stringify(weightHistory));
+                            updateWeightHistoryDisplay();
+                            showNotification('Registro eliminado correctamente', 'success');
+                        }
+                    });
+                });
+                
+                // Actualizar resumen
+                updateWeightSummary();
+            }
+            
+            function updateWeightSummary() {
+                if (weightHistory.length < 2) {
+                    weightSummary.innerHTML = '<p>Se necesitan al menos 2 registros para mostrar un resumen.</p>';
+                    return;
+                }
+                
+                // Ordenar por fecha
+                weightHistory.sort((a, b) => {
+                    if (a.year !== b.year) return a.year - b.year;
+                    return a.month - b.month;
+                });
+                
+                const firstWeight = weightHistory[0].weight;
+                const lastWeight = weightHistory[weightHistory.length - 1].weight;
+                const weightChange = lastWeight - firstWeight;
+                
+                let summaryHTML = `
+                    <h3>Resumen de Progreso</h3>
+                    <p>Peso inicial: ${firstWeight} kg</p>
+                    <p>Peso actual: ${lastWeight} kg</p>
+                `;
+                
+                if (weightChange > 0) {
+                    summaryHTML += `<p class="weight-change negative">Has ganado ${weightChange.toFixed(1)} kg</p>`;
+                } else if (weightChange < 0) {
+                    summaryHTML += `<p class="weight-change positive">Has perdido ${Math.abs(weightChange).toFixed(1)} kg</p>`;
+                } else {
+                    summaryHTML += `<p class="weight-change">Tu peso se ha mantenido igual</p>`;
+                }
+                
+                weightSummary.innerHTML = summaryHTML;
+            }
+            
+            weightHistoryForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const month = parseInt(monthSelect.value);
+                const weight = parseFloat(monthWeight.value);
+                const currentYear = new Date().getFullYear();
+                
+                if (isNaN(month) || isNaN(weight)) {
+                    showNotification('Por favor, completa todos los campos correctamente', 'error');
+                    return;
+                }
+                
+                // Verificar si ya existe un registro para este mes y año
+                const existingIndex = weightHistory.findIndex(item => 
+                    item.month === month && item.year === currentYear
+                );
+                
+                if (existingIndex !== -1) {
+                    // Actualizar registro existente
+                    weightHistory[existingIndex].weight = weight;
+                    showNotification('Peso actualizado correctamente', 'success');
+                } else {
+                    // Crear nuevo registro
+                    const newEntry = {
+                        id: Date.now().toString(),
+                        month: month,
+                        year: currentYear,
+                        weight: weight
+                    };
+                    
+                    weightHistory.push(newEntry);
+                    showNotification('Peso guardado correctamente', 'success');
+                }
+                
+                // Guardar en localStorage y actualizar la vista
+                localStorage.setItem('weightHistory', JSON.stringify(weightHistory));
+                updateWeightHistoryDisplay();
+                
+                // Limpiar formulario
+                weightHistoryForm.reset();
+            });
+            
+            // Inicializar la vista del historial de peso
+            updateWeightHistoryDisplay();
+
+            // Configurar tarjetas de tiendas
+            document.querySelectorAll('.store-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const url = this.getAttribute('data-url');
+                    window.open(url, '_blank');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
